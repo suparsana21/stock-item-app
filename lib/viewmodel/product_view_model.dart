@@ -1,6 +1,6 @@
 
-import 'package:stock_item/models/index.dart';
-import 'package:stock_item/models/product.dart';
+import 'package:stock_item/models/product/product.dart';
+import 'package:stock_item/models/product/productPagingResponse.dart';
 import 'package:stock_item/services/rest_api.dart';
 import 'package:stock_item/services/view_state.dart';
 import 'package:stock_item/viewmodel/base_view_model.dart';

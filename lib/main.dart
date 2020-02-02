@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:stock_item/pages/dashboard.dart';
+import 'package:stock_item/pages/splashscreen.dart';
 
 void main() => runApp(MyApp());
 
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: DashboardPage(),
+      home: SplashScreen(),
     );
   }
 }

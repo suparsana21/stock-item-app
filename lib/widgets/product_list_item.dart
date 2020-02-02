@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:stock_item/config/helper.dart';
 import 'package:stock_item/config/responsive_layout.dart';
-import 'package:stock_item/models/product.dart';
+import 'package:stock_item/models/product/product.dart';
 import 'package:stock_item/widgets/panel.dart';
 
 class ProductListItem extends StatelessWidget {

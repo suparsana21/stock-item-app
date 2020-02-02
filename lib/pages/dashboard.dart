@@ -1,7 +1,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stock_item/config/app_config.dart';
 import 'package:stock_item/config/responsive_layout.dart';
+import 'package:stock_item/pages/auth/login.dart';
 import 'package:stock_item/pages/base_view.dart';
 import 'package:stock_item/pages/product/product_list.dart';
 import 'package:stock_item/viewmodel/dashboard_view_model.dart';
@@ -16,6 +19,46 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPage extends State<DashboardPage> {
 
+  Future<void> _confirmModal() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Confirmation'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Container(margin: EdgeInsets.only(left: 16),child: Text("Are you sure want to log out?"))
+                  ],
+                )
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            FlatButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            FlatButton(
+              child: Text('Log Out'),
+              onPressed: () async {
+                var sp = await SharedPreferences.getInstance();
+                sp.setString(AppConfig.API_KEY, null);
+
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginPage()) , (Route<dynamic> route) => false);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
 
@@ -26,7 +69,8 @@ class _DashboardPage extends State<DashboardPage> {
         child: Consumer(
           builder: (context,DashboardViewModel model,_) => Scaffold(
             appBar: AppBar(
-                backgroundColor: Colors.white,
+              iconTheme: IconThemeData(color: Colors.black54),
+              backgroundColor: Colors.white,
                 elevation: 1,
                 title: Container(
                   child: Row(
@@ -42,7 +86,54 @@ class _DashboardPage extends State<DashboardPage> {
                   ),
                 ),
                 titleSpacing: 0.0,
-                automaticallyImplyLeading: false
+//                automaticallyImplyLeading: false,
+                actions: <Widget>[
+                  IconButton(icon: Icon(Icons.space_bar),color: Colors.white,onPressed: (){
+
+                  },)
+                ],
+            ),
+            drawer:  Drawer(
+              // Add a ListView to the drawer. This ensures the user can scroll
+              // through the options in the drawer if there isn't enough vertical
+              // space to fit everything.
+              child: SafeArea(
+                child: ListView(
+                  // Important: Remove any padding from the ListView.
+                  padding: EdgeInsets.zero,
+                  children: <Widget>[
+                    Container(
+                      child: Container(
+                        margin: EdgeInsets.all(24),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Icon(Icons.account_circle,color: Colors.black54,size: 60,),
+                            Container(
+                              margin: EdgeInsets.only(top : 16),
+                              child: Text("Hello, "),
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top : 16),
+                              child: Text(model.user == null ? "-" : model.user.name),
+                            )
+                          ],
+                        ),
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.blue[300],
+                      ),
+                    ),
+                    ListTile(
+                      title: Text('Logout'),
+                      onTap: () {
+                        _confirmModal();
+                      },
+                    ),
+                  ],
+                ),
+              ),
             ),
             body: RefreshIndicator(
               onRefresh: () async {
@@ -132,6 +223,7 @@ class _DashboardPage extends State<DashboardPage> {
       ));
 
   }
+
 
 }
 

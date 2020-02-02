@@ -34,6 +34,13 @@ dependencies:
   # Shimmer
   shimmer: ^1.0.0
 
+  # Share Preference
+  shared_preferences:
+
+
+  # Toast
+  toast: ^0.1.5
+
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
